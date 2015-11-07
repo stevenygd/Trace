@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		081483761BEDF4D800C4CD84 /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081483751BEDF4D800C4CD84 /* GameOverScene.swift */; };
 		48DDBDF51BEDEB6400D23C3E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DDBDF41BEDEB6400D23C3E /* AppDelegate.swift */; };
 		48DDBDF71BEDEB6400D23C3E /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 48DDBDF61BEDEB6400D23C3E /* GameScene.sks */; };
 		48DDBDF91BEDEB6400D23C3E /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DDBDF81BEDEB6400D23C3E /* GameScene.swift */; };
@@ -37,6 +38,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		081483751BEDF4D800C4CD84 /* GameOverScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
 		48DDBDF11BEDEB6400D23C3E /* Trace.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Trace.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		48DDBDF41BEDEB6400D23C3E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		48DDBDF61BEDEB6400D23C3E /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -107,6 +109,7 @@
 				48DDBDF41BEDEB6400D23C3E /* AppDelegate.swift */,
 				48DDBDF61BEDEB6400D23C3E /* GameScene.sks */,
 				48DDBDF81BEDEB6400D23C3E /* GameScene.swift */,
+				081483751BEDF4D800C4CD84 /* GameOverScene.swift */,
 				48DDBDFA1BEDEB6400D23C3E /* GameViewController.swift */,
 				48DDBDFC1BEDEB6400D23C3E /* Main.storyboard */,
 				48DDBDFF1BEDEB6400D23C3E /* Assets.xcassets */,
@@ -277,6 +280,7 @@
 			files = (
 				48DDBDF91BEDEB6400D23C3E /* GameScene.swift in Sources */,
 				48DDBDFB1BEDEB6400D23C3E /* GameViewController.swift in Sources */,
+				081483761BEDF4D800C4CD84 /* GameOverScene.swift in Sources */,
 				48DDBDF51BEDEB6400D23C3E /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -504,6 +508,7 @@
 				48DDBE1F1BEDEB6500D23C3E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		48DDBE201BEDEB6500D23C3E /* Build configuration list for PBXNativeTarget "TraceTests" */ = {
 			isa = XCConfigurationList;
@@ -512,6 +517,7 @@
 				48DDBE221BEDEB6500D23C3E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		48DDBE231BEDEB6500D23C3E /* Build configuration list for PBXNativeTarget "TraceUITests" */ = {
 			isa = XCConfigurationList;
@@ -520,6 +526,7 @@
 				48DDBE251BEDEB6500D23C3E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
