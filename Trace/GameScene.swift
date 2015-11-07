@@ -17,11 +17,12 @@ class GameScene: SKScene {
     var gameSpeed = 20.0
     
     var balls = [(SKNode, SKNode)]()
+    var lines : [SKNode] = [];
     
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
         let myLabel = SKLabelNode(fontNamed:"Chalkduster")
-        myLabel.text = "Hello, World!";
+        myLabel.text = "Trace!";
         myLabel.fontSize = 45;
         myLabel.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame));
         self.addChild(myLabel)
@@ -29,58 +30,95 @@ class GameScene: SKScene {
             renderFromFile(path);
         }
         
+        
     }
     
     // Render the next canvas from file
     private func renderFromFile(path:String){
         // load game data
-        var nodesArray : [SKNode] = [];
         
-        if let data:NSData = NSFileManager.defaultManager().contentsAtPath(path) {
-            if let parsedObject: AnyObject? = try? NSJSONSerialization.JSONObjectWithData(data,
-                options: NSJSONReadingOptions.AllowFragments){
-                    if let pDict:NSArray = parsedObject as? NSArray{
-                        for obj in pDict{
-                            if let objDict:NSDictionary = obj as? NSDictionary {
-                                if let sArray : NSArray = objDict["s"] as? NSArray {
-                                    if let eArray : NSArray = objDict["e"] as? NSArray {
-                                        
-                                        let s:CGPoint = CGPointMake(
-                                            CGFloat(sArray[0] as! NSNumber),
-                                            CGFloat(sArray[1] as! NSNumber)
-                                        );
-                                        let e:CGPoint = CGPointMake(
-                                            CGFloat(eArray[0] as! NSNumber),
-                                            CGFloat(eArray[1] as! NSNumber)
-                                        );
-                                        
-                                        let line : SKNode = drawLine(s, e:e).0;
-                                        let ball1 = drawLine(s, e:e).1;
-                                        let ball2 = drawLine(s, e:e).2;
-                                        
-                                        
-                                        nodesArray.append(line);
-//                                        if (balls.count == 0) {
-//                                            balls.append(ball1)
-//                                            balls.append(ball2)
-//                                        } else {
-//                                            balls.append(ball2)
-//                                        }
-                                        balls.append((ball1, ball2))
-                                        
-                                    }
-                                }
-                            }
-                        }
-                    }
-            }else{
-                print("something is wrong");
+        
+//        if let data:NSData = NSFileManager.defaultManager().contentsAtPath(path) {
+//            if let parsedObject: AnyObject? = try? NSJSONSerialization.JSONObjectWithData(data,
+//                options: NSJSONReadingOptions.AllowFragments){
+//                    if let pDict:NSArray = parsedObject as? NSArray{
+//                        for obj in pDict{
+//                            if let objDict:NSDictionary = obj as? NSDictionary {
+//                                if let sArray : NSArray = objDict["s"] as? NSArray {
+//                                    if let eArray : NSArray = objDict["e"] as? NSArray {
+//                                        
+//                                        let s:CGPoint = CGPointMake(
+//                                            CGFloat(sArray[0] as! NSNumber),
+//                                            CGFloat(sArray[1] as! NSNumber)
+//                                        );
+//                                        let e:CGPoint = CGPointMake(
+//                                            CGFloat(eArray[0] as! NSNumber),
+//                                            CGFloat(eArray[1] as! NSNumber)
+//                                        );
+//                                        
+//                                        let line : SKNode = drawLine(s, e:e).0;
+//                                        let ball1 = drawLine(s, e:e).1;
+//                                        let ball2 = drawLine(s, e:e).2;
+//                                        
+//                                        
+//                                        lines.append(line);
+////                                        if (balls.count == 0) {
+////                                            balls.append(ball1)
+////                                            balls.append(ball2)
+////                                        } else {
+////                                            balls.append(ball2)
+////                                        }
+//                                        balls.append((ball1, ball2))
+//                                        
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    }
+//            }else{
+//                print("something is wrong");
+//            }
+//        }else{
+//            print("GOT NOTHING");
+//        }
+        
+        self.runAction(SKAction.repeatActionForever(
+            SKAction.sequence([
+                SKAction.runBlock({
+                    self.generateRandomLinesAndBalls();
+                    self.drawLinesAndBallsOffCanvas(self.lines, balls: self.balls, duration: self.gameSpeed);
+                }),
+                SKAction.waitForDuration(gameSpeed / (3 / 0.8))
+                ])
+            ))
+    }
+    
+    private func generateRandomLinesAndBalls(){
+        var lastE:CGPoint = CGPointMake(0, 0)
+        for i in 1...4 {
+            let s:CGPoint
+            let e:CGPoint
+            if i == 4 {
+                s = lastE
+                e = CGPointMake(0.5, 0)
+            } else if i == 1 {
+                s = CGPointMake(0.5, 1)
+                e = CGPointMake(randomCGFloat(), randomCGFloat())
+            } else {
+                s = lastE
+                e = CGPointMake(randomCGFloat(), randomCGFloat())
             }
-        }else{
-            print("GOT NOTHING");
+            lastE = e
+            let line : SKNode = drawLine(s, e:e).0;
+            let ball1 = drawLine(s, e:e).1;
+            let ball2 = drawLine(s, e:e).2;
+            lines.append(line);
+            balls.append((ball1, ball2))
         }
-        
-        drawLinesAndBallsOffCanvas(nodesArray, balls: self.balls, duration: gameSpeed);
+    }
+    
+    func randomCGFloat() -> CGFloat {
+        return CGFloat(Float(arc4random()) / Float(UINT32_MAX))
     }
     
     /**
@@ -88,7 +126,7 @@ class GameScene: SKScene {
      * And move these lines up in constant speed
      */
     private func drawLinesAndBallsOffCanvas(nodes:[SKNode], balls:[(SKNode, SKNode)], duration:NSTimeInterval){
-        let moveNodeUp = SKAction.moveByX(CGFloat(0.0), y: CGFloat(3000.0), duration: duration);
+        let moveNodeUp = SKAction.moveByX(CGFloat(0.0), y: CGFloat(3 * screenHeight), duration: duration);
         
         for line:SKNode in nodes {
             line.position = CGPointMake(line.position.x, line.position.y - screenHeight);
@@ -113,6 +151,9 @@ class GameScene: SKScene {
                 ball2.removeFromParent();
             })
         }
+        
+        lines.removeAll()
+        self.balls.removeAll()
     }
     
     /* Called when a touch begins */
