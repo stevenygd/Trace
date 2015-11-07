@@ -15,6 +15,7 @@ class GameScene: SKScene {
     let resWidthRatio = CGFloat(0.8);
     let resHeightRatio = CGFloat(0.8);
     var gameSpeed = 20.0
+    var lineCap = 4
     
     var balls = [(SKNode, SKNode)]()
     var lines : [SKNode] = [];
@@ -85,7 +86,7 @@ class GameScene: SKScene {
         self.runAction(SKAction.repeatActionForever(
             SKAction.sequence([
                 SKAction.runBlock({
-                    self.generateRandomLinesAndBalls();
+                    self.generateRandomLinesAndBalls(self.lineCap);
                     self.drawLinesAndBallsOffCanvas(self.lines, balls: self.balls, duration: self.gameSpeed);
                 }),
                 SKAction.waitForDuration(gameSpeed / (3 / 0.8))
@@ -93,12 +94,13 @@ class GameScene: SKScene {
             ))
     }
     
-    private func generateRandomLinesAndBalls(){
+    private func generateRandomLinesAndBalls(lineCap:NSInteger){
         var lastE:CGPoint = CGPointMake(0, 0)
-        for i in 1...4 {
-            let s:CGPoint
-            let e:CGPoint
-            if i == 4 {
+        var lastS:CGPoint = CGPointMake(0, 0)
+        for i in 1...lineCap {
+            var s:CGPoint
+            var e:CGPoint
+            if i == lineCap {
                 s = lastE
                 e = CGPointMake(0.5, 0)
             } else if i == 1 {
@@ -107,8 +109,19 @@ class GameScene: SKScene {
             } else {
                 s = lastE
                 e = CGPointMake(randomCGFloat(), randomCGFloat())
+                var dotProduct = (e.x - s.x) * (lastE.x - lastS.x) + (e.y - s.y) * (lastE.y - lastS.y)
+                var angle = acos(dotProduct / (lengthOf(s, e: e) * lengthOf(lastS, e: lastE)))
+                //change here to limit the range of angle 
+                while angle > 1.14 || angle < 1.04 {
+                    s = lastE
+                    e = CGPointMake(randomCGFloat(), randomCGFloat())
+                    dotProduct = (e.x - s.x) * (lastE.x - lastS.x) + (e.y - s.y) * (lastE.y - lastS.y)
+                    angle = acos(dotProduct / (lengthOf(s, e: e) * lengthOf(lastS, e: lastE)))
+                }
+                print(angle)
             }
             lastE = e
+            lastS = s
             let line : SKNode = drawLine(s, e:e).0;
             let ball1 = drawLine(s, e:e).1;
             let ball2 = drawLine(s, e:e).2;
@@ -119,6 +132,12 @@ class GameScene: SKScene {
     
     func randomCGFloat() -> CGFloat {
         return CGFloat(Float(arc4random()) / Float(UINT32_MAX))
+    }
+    
+    func lengthOf(s: CGPoint, e: CGPoint) -> CGFloat {
+        let xDiff = e.x - s.x
+        let yDiff = e.y - s.y
+        return sqrt(xDiff * xDiff + yDiff * yDiff)
     }
     
     /**
