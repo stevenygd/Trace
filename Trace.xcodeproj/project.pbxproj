@@ -16,6 +16,7 @@
 		48DDBE031BEDEB6400D23C3E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 48DDBE011BEDEB6400D23C3E /* LaunchScreen.storyboard */; };
 		48DDBE0E1BEDEB6400D23C3E /* TraceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DDBE0D1BEDEB6400D23C3E /* TraceTests.swift */; };
 		48DDBE191BEDEB6500D23C3E /* TraceUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DDBE181BEDEB6500D23C3E /* TraceUITests.swift */; };
+		48DDBE271BEDF61100D23C3E /* scene.dat in Resources */ = {isa = PBXBuildFile; fileRef = 48DDBE261BEDF61100D23C3E /* scene.dat */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,7 @@
 		48DDBE141BEDEB6500D23C3E /* TraceUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TraceUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		48DDBE181BEDEB6500D23C3E /* TraceUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TraceUITests.swift; sourceTree = "<group>"; };
 		48DDBE1A1BEDEB6500D23C3E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		48DDBE261BEDF61100D23C3E /* scene.dat */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = scene.dat; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +103,7 @@
 		48DDBDF31BEDEB6400D23C3E /* Trace */ = {
 			isa = PBXGroup;
 			children = (
+				48DDBE281BEDF6EA00D23C3E /* data */,
 				48DDBDF41BEDEB6400D23C3E /* AppDelegate.swift */,
 				48DDBDF61BEDEB6400D23C3E /* GameScene.sks */,
 				48DDBDF81BEDEB6400D23C3E /* GameScene.swift */,
@@ -129,6 +132,14 @@
 				48DDBE1A1BEDEB6500D23C3E /* Info.plist */,
 			);
 			path = TraceUITests;
+			sourceTree = "<group>";
+		};
+		48DDBE281BEDF6EA00D23C3E /* data */ = {
+			isa = PBXGroup;
+			children = (
+				48DDBE261BEDF61100D23C3E /* scene.dat */,
+			);
+			name = data;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -238,6 +249,7 @@
 				48DDBDF71BEDEB6400D23C3E /* GameScene.sks in Resources */,
 				48DDBE031BEDEB6400D23C3E /* LaunchScreen.storyboard in Resources */,
 				48DDBE001BEDEB6400D23C3E /* Assets.xcassets in Resources */,
+				48DDBE271BEDF61100D23C3E /* scene.dat in Resources */,
 				48DDBDFE1BEDEB6400D23C3E /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
