@@ -29,11 +29,14 @@ extension SKNode {
 class GameViewController: UIViewController {
     
     var backgroundMusicPlayer:AVAudioPlayer = AVAudioPlayer()
-
+    let pan : UIPanGestureRecognizer = UIPanGestureRecognizer();
+    
+    var scene : GameScene? = GameScene(fileNamed:"GameScene");
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if let scene = GameScene(fileNamed:"GameScene") {
+        if (self.scene != nil) {
             // Configure the view.
             let skView = self.view as! SKView
             skView.showsFPS = true
@@ -43,9 +46,48 @@ class GameViewController: UIViewController {
             skView.ignoresSiblingOrder = true
             
             /* Set the scale mode to scale to fit the window */
-            scene.scaleMode = .AspectFill
+            scene!.scaleMode = .AspectFill
             
             skView.presentScene(scene)
+            
+            // set up the pan gesture recognizer
+            pan.addTarget(self, action: "panOnView:")
+            self.view.addGestureRecognizer(pan);
+        }
+        
+
+    }
+    
+    func panOnView(sender:UIPanGestureRecognizer){
+        switch sender.state {
+        case UIGestureRecognizerState.Possible :
+            print("possible");
+        case UIGestureRecognizerState.Began :
+            print("began");
+            scene!.gameStart();
+            break;
+        case UIGestureRecognizerState.Changed:
+            print("changed %@", sender.locationInView(self.view));
+            break;
+        case UIGestureRecognizerState.Ended:
+            print("ended");
+            // end game
+            scene!.gameOver();
+            break;
+            
+        case UIGestureRecognizerState.Cancelled:
+            print("canceled");
+            // end game
+            scene!.gameOver();
+            break;
+        case UIGestureRecognizerState.Failed:
+            print("failed");
+            // end game
+            scene!.gameOver();
+            break;
+        case UIGestureRecognizerState.Recognized:
+            print("recognized");
+            break;
         }
     }
     

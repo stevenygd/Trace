@@ -8,7 +8,16 @@
 
 import SpriteKit
 
+enum SceneState {
+    case ReadyToBegin
+    case OnProgress
+    case GameOver
+}
+
+
 class GameScene: SKScene {
+
+    var state : SceneState = SceneState.ReadyToBegin;
     
     let screenWidth   = UIScreen.mainScreen().bounds.size.width
     let screenHeight = UIScreen.mainScreen().bounds.size.height
@@ -29,8 +38,6 @@ class GameScene: SKScene {
         if let path = NSBundle.mainBundle().pathForResource("scene", ofType:"dat") {
             renderFromFile(path);
         }
-        
-        
     }
     
     // Render the next canvas from file
@@ -126,6 +133,10 @@ class GameScene: SKScene {
      * And move these lines up in constant speed
      */
     private func drawLinesAndBallsOffCanvas(nodes:[SKNode], balls:[(SKNode, SKNode)], duration:NSTimeInterval){
+        // clean up
+        lines.removeAll()
+        self.balls.removeAll()
+
         let moveNodeUp = SKAction.moveByX(CGFloat(0.0), y: CGFloat(3 * screenHeight), duration: duration);
         
         for line:SKNode in nodes {
@@ -152,24 +163,22 @@ class GameScene: SKScene {
             })
         }
         
-        lines.removeAll()
-        self.balls.removeAll()
     }
     
     /* Called when a touch begins */
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        
-        // dones't support multi touch
-        if (touches.count != 1){
-            gameOver();
-            return;
-        }
-        
-        print(event);
-        for touch:UITouch in touches {
-            print(touch);
-        }
-    }
+//    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+//        
+//        // dones't support multi touch
+//        if (touches.count != 1){
+//            gameOver();
+//            return;
+//        }
+//        
+//        print(event);
+//        for touch:UITouch in touches {
+//            print(touch);
+//        }
+//    }
    
     /**
      * [pre] s, e lays inside [0,0]<->[1,1]
@@ -205,11 +214,18 @@ class GameScene: SKScene {
     }
     
     // the function that will be called when the player loses the game
-    private func gameOver(){
+    func gameOver(){
         let transition:SKTransition = SKTransition.flipHorizontalWithDuration(0.5)
         let gameOverScene:SKScene = GameOverScene(size: self.size)
         self.view?.presentScene(gameOverScene, transition: transition)
     }
+    
+    
+    // start or restart t
+    func gameStart(){
+        // TODO
+    }
+
     
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
