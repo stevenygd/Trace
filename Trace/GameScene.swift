@@ -16,7 +16,7 @@ class GameScene: SKScene {
     let resHeightRatio = CGFloat(0.8);
     var gameSpeed = 20.0
     
-    var balls = [SKNode]()
+    var balls = [(SKNode, SKNode)]()
     
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
@@ -60,12 +60,13 @@ class GameScene: SKScene {
                                         
                                         
                                         nodesArray.append(line);
-                                        if (balls.count == 0) {
-                                            balls.append(ball1)
-                                            balls.append(ball2)
-                                        } else {
-                                            balls.append(ball2)
-                                        }
+//                                        if (balls.count == 0) {
+//                                            balls.append(ball1)
+//                                            balls.append(ball2)
+//                                        } else {
+//                                            balls.append(ball2)
+//                                        }
+                                        balls.append((ball1, ball2))
                                         
                                     }
                                 }
@@ -86,7 +87,7 @@ class GameScene: SKScene {
      * Find a place off canvase to draw the lines
      * And move these lines up in constant speed
      */
-    private func drawLinesAndBallsOffCanvas(nodes:[SKNode], balls:[SKNode], duration:NSTimeInterval){
+    private func drawLinesAndBallsOffCanvas(nodes:[SKNode], balls:[(SKNode, SKNode)], duration:NSTimeInterval){
         let moveNodeUp = SKAction.moveByX(CGFloat(0.0), y: CGFloat(3000.0), duration: duration);
         
         for line:SKNode in nodes {
@@ -98,12 +99,18 @@ class GameScene: SKScene {
             })
         }
         
-        for ball:SKNode in balls {
-            ball.position = CGPointMake(ball.position.x, ball.position.y - screenHeight);
-            self.addChild(ball);
-            ball.runAction(moveNodeUp, completion: { () -> Void in
+        for (ball1, ball2) in balls {
+            ball1.position = CGPointMake(ball1.position.x, ball1.position.y - screenHeight)
+            ball2.position = CGPointMake(ball2.position.x, ball2.position.y - screenHeight)
+            self.addChild(ball1)
+            self.addChild(ball2)
+            ball1.runAction(moveNodeUp, completion: { () -> Void in
                 // clean up the nodes
-                ball.removeFromParent();
+                ball1.removeFromParent();
+            })
+            ball2.runAction(moveNodeUp, completion: { () -> Void in
+                // clean up the nodes
+                ball2.removeFromParent();
             })
         }
     }
