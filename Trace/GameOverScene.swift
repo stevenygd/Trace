@@ -12,17 +12,14 @@ import SpriteKit
 
 class GameOverScene: SKScene {
     
-    init(size: CGSize, won:Bool) {
+    override init(size: CGSize) {
         super.init(size:size)
         self.backgroundColor = SKColor.whiteColor()
         
         var message:NSString = NSString()
         
-        if (won){
-            message = "You Won!"
-        }else{
-            message = "Game Over"
-        }
+        message = "Game Over"
+        
         
         let label:SKLabelNode = SKLabelNode(fontNamed: "DamascusBold")
         label.text = message as String

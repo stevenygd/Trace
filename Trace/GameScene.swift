@@ -14,6 +14,9 @@ class GameScene: SKScene {
     let screenHeight = UIScreen.mainScreen().bounds.size.height
     let resWidthRatio = CGFloat(0.8);
     let resHeightRatio = CGFloat(0.8);
+    var gameSpeed = 20.0
+    
+    var balls = [SKNode]()
     
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
@@ -51,8 +54,19 @@ class GameScene: SKScene {
                                             CGFloat(eArray[1] as! NSNumber)
                                         );
                                         
-                                        let line : SKNode = drawLine(s, e:e);
+                                        let line : SKNode = drawLine(s, e:e).0;
+                                        let ball1 = drawLine(s, e:e).1;
+                                        let ball2 = drawLine(s, e:e).2;
+                                        
+                                        
                                         nodesArray.append(line);
+                                        if (balls.count == 0) {
+                                            balls.append(ball1)
+                                            balls.append(ball2)
+                                        } else {
+                                            balls.append(ball2)
+                                        }
+                                        
                                     }
                                 }
                             }
@@ -65,14 +79,14 @@ class GameScene: SKScene {
             print("GOT NOTHING");
         }
         
-        drawLinesOffCanvas(nodesArray, duration: 10.0);
+        drawLinesAndBallsOffCanvas(nodesArray, balls: self.balls, duration: gameSpeed);
     }
     
     /**
      * Find a place off canvase to draw the lines
      * And move these lines up in constant speed
      */
-    private func drawLinesOffCanvas(nodes:[SKNode], duration:NSTimeInterval){
+    private func drawLinesAndBallsOffCanvas(nodes:[SKNode], balls:[SKNode], duration:NSTimeInterval){
         let moveNodeUp = SKAction.moveByX(CGFloat(0.0), y: CGFloat(3000.0), duration: duration);
         
         for line:SKNode in nodes {
@@ -81,6 +95,15 @@ class GameScene: SKScene {
             line.runAction(moveNodeUp, completion: { () -> Void in
                 // clean up the nodes
                 line.removeFromParent();
+            })
+        }
+        
+        for ball:SKNode in balls {
+            ball.position = CGPointMake(ball.position.x, ball.position.y - screenHeight);
+            self.addChild(ball);
+            ball.runAction(moveNodeUp, completion: { () -> Void in
+                // clean up the nodes
+                ball.removeFromParent();
             })
         }
     }
@@ -102,8 +125,9 @@ class GameScene: SKScene {
    
     /**
      * [pre] s, e lays inside [0,0]<->[1,1]
+     * @return the second one is the node for the s ball, the
      */
-    private func drawLine(s: CGPoint, e: CGPoint) -> SKShapeNode {
+    private func drawLine(s: CGPoint, e: CGPoint) -> (SKShapeNode, SKShapeNode, SKShapeNode) {
         
         let restrictedHeight = resHeightRatio * screenHeight;
         let restrictedWidth  = resWidthRatio  * screenWidth;
@@ -116,15 +140,27 @@ class GameScene: SKScene {
         
         // offset to center
         line.position = CGPointMake(line.position.x + (0.5 - 0.5 * resWidthRatio)  * screenWidth,
-                                    line.position.x + (0.5 - 0.5 * resHeightRatio) * screenHeight);
+                                    line.position.y + (0.5 - 0.5 * resHeightRatio) * screenHeight);
         
+        let ball1 = SKShapeNode(circleOfRadius: 10);
+        ball1.position = CGPointMake(s.x * restrictedWidth + (0.5 - 0.5 * resWidthRatio)  * screenWidth, s.y * restrictedHeight + (0.5 - 0.5 * resHeightRatio) * screenHeight)
+        ball1.strokeColor = SKColor.whiteColor()
+        ball1.fillColor = SKColor.whiteColor()
+        
+        let ball2 = SKShapeNode(circleOfRadius: 10);
+        ball2.position = CGPointMake(e.x * restrictedWidth + (0.5 - 0.5 * resWidthRatio)  * screenWidth, e.y * restrictedHeight + (0.5 - 0.5 * resHeightRatio) * screenHeight)
+        ball2.strokeColor = SKColor.whiteColor()
+        ball2.fillColor = SKColor.whiteColor()
 
-        return line;
+        
+        return (line, ball1, ball2);
     }
     
     // the function that will be called when the player loses the game
     private func gameOver(){
-        
+        let transition:SKTransition = SKTransition.flipHorizontalWithDuration(0.5)
+        let gameOverScene:SKScene = GameOverScene(size: self.size)
+        self.view?.presentScene(gameOverScene, transition: transition)
     }
     
     override func update(currentTime: CFTimeInterval) {
