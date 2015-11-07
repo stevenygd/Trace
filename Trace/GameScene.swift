@@ -10,7 +10,7 @@ import SpriteKit
 
 class GameScene: SKScene {
     
-    let screenWith   = UIScreen.mainScreen().bounds.size.width
+    let screenWidth   = UIScreen.mainScreen().bounds.size.width
     let screenHeight = UIScreen.mainScreen().bounds.size.height
     
     override func didMoveToView(view: SKView) {
@@ -67,8 +67,8 @@ class GameScene: SKScene {
     private func drawLine(s: CGPoint, e: CGPoint) -> SKShapeNode {
         let line: SKShapeNode = SKShapeNode();
         let pathToDraw : CGMutablePathRef = CGPathCreateMutable();
-        CGPathMoveToPoint(pathToDraw, nil, s.x * screenWith, s.y * screenHeight)
-        CGPathAddLineToPoint(pathToDraw, nil, e.x * screenWith, e.y * screenHeight);
+        CGPathMoveToPoint(pathToDraw, nil, s.x * screenWidth, s.y * screenHeight)
+        CGPathAddLineToPoint(pathToDraw, nil, e.x * screenWidth, e.y * screenHeight);
         line.path = pathToDraw;
 
         return line;

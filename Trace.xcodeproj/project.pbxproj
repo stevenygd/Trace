@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		081483761BEDF4D800C4CD84 /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081483751BEDF4D800C4CD84 /* GameOverScene.swift */; };
+		0814837E1BEE05E400C4CD84 /* bgmusic.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 0814837D1BEE05E400C4CD84 /* bgmusic.mp3 */; };
 		48DDBDF51BEDEB6400D23C3E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DDBDF41BEDEB6400D23C3E /* AppDelegate.swift */; };
 		48DDBDF71BEDEB6400D23C3E /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 48DDBDF61BEDEB6400D23C3E /* GameScene.sks */; };
 		48DDBDF91BEDEB6400D23C3E /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DDBDF81BEDEB6400D23C3E /* GameScene.swift */; };
@@ -39,6 +40,7 @@
 
 /* Begin PBXFileReference section */
 		081483751BEDF4D800C4CD84 /* GameOverScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
+		0814837D1BEE05E400C4CD84 /* bgmusic.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bgmusic.mp3; sourceTree = "<group>"; };
 		48DDBDF11BEDEB6400D23C3E /* Trace.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Trace.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		48DDBDF41BEDEB6400D23C3E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		48DDBDF61BEDEB6400D23C3E /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -82,6 +84,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0814837C1BEE05C900C4CD84 /* sounds */ = {
+			isa = PBXGroup;
+			children = (
+				0814837D1BEE05E400C4CD84 /* bgmusic.mp3 */,
+			);
+			name = sounds;
+			sourceTree = "<group>";
+		};
 		48DDBDE81BEDEB6400D23C3E = {
 			isa = PBXGroup;
 			children = (
@@ -112,6 +122,7 @@
 				081483751BEDF4D800C4CD84 /* GameOverScene.swift */,
 				48DDBDFA1BEDEB6400D23C3E /* GameViewController.swift */,
 				48DDBDFC1BEDEB6400D23C3E /* Main.storyboard */,
+				0814837C1BEE05C900C4CD84 /* sounds */,
 				48DDBDFF1BEDEB6400D23C3E /* Assets.xcassets */,
 				48DDBE011BEDEB6400D23C3E /* LaunchScreen.storyboard */,
 				48DDBE041BEDEB6400D23C3E /* Info.plist */,
@@ -254,6 +265,7 @@
 				48DDBE001BEDEB6400D23C3E /* Assets.xcassets in Resources */,
 				48DDBE271BEDF61100D23C3E /* scene.dat in Resources */,
 				48DDBDFE1BEDEB6400D23C3E /* Main.storyboard in Resources */,
+				0814837E1BEE05E400C4CD84 /* bgmusic.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
