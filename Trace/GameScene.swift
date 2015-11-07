@@ -24,13 +24,14 @@ class GameScene: SKScene {
         // load game data
         if let path = NSBundle.mainBundle().pathForResource("scene", ofType:"dat") {
             if let data:NSData = NSFileManager.defaultManager().contentsAtPath(path) {
-                do{
-                    let parsedObject: AnyObject? = try NSJSONSerialization.JSONObjectWithData(data,
-                        options: NSJSONReadingOptions.AllowFragments)
-                    print(parsedObject);
-                } catch is NSError {
-                    print("Something is wrong");
+                print(data);
+                if let parsedObject: AnyObject? = try? NSJSONSerialization.JSONObjectWithData(data,
+                    options: NSJSONReadingOptions.AllowFragments){
+                        print(parsedObject);
+                }else{
+                    print("something is wrong");
                 }
+
             }else{
                 print("GOT NOTHING");
             }
