@@ -25,9 +25,12 @@ class GameScene: SKScene {
     let resHeightRatio = CGFloat(0.8);
     var gameSpeed = 20.0
     var lineCap = 4
+    var fingerLocation:CGPoint = CGPointMake(0, 0)
     
     var balls = [(SKNode, SKNode)]()
     var lines : [SKNode] = [];
+    var allLines:[SKNode] = [];
+    var allBalls:[SKNode] = [];
     
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
@@ -36,70 +39,11 @@ class GameScene: SKScene {
         myLabel.fontSize = 45;
         myLabel.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame));
         self.addChild(myLabel)
-        if let path = NSBundle.mainBundle().pathForResource("scene", ofType:"dat") {
-            renderFromFile(path);
-        }
+        
+        gameStart()
     }
     
-    // Render the next canvas from file
-    private func renderFromFile(path:String){
-        // load game data
-        
-        
-//        if let data:NSData = NSFileManager.defaultManager().contentsAtPath(path) {
-//            if let parsedObject: AnyObject? = try? NSJSONSerialization.JSONObjectWithData(data,
-//                options: NSJSONReadingOptions.AllowFragments){
-//                    if let pDict:NSArray = parsedObject as? NSArray{
-//                        for obj in pDict{
-//                            if let objDict:NSDictionary = obj as? NSDictionary {
-//                                if let sArray : NSArray = objDict["s"] as? NSArray {
-//                                    if let eArray : NSArray = objDict["e"] as? NSArray {
-//                                        
-//                                        let s:CGPoint = CGPointMake(
-//                                            CGFloat(sArray[0] as! NSNumber),
-//                                            CGFloat(sArray[1] as! NSNumber)
-//                                        );
-//                                        let e:CGPoint = CGPointMake(
-//                                            CGFloat(eArray[0] as! NSNumber),
-//                                            CGFloat(eArray[1] as! NSNumber)
-//                                        );
-//                                        
-//                                        let line : SKNode = drawLine(s, e:e).0;
-//                                        let ball1 = drawLine(s, e:e).1;
-//                                        let ball2 = drawLine(s, e:e).2;
-//                                        
-//                                        
-//                                        lines.append(line);
-////                                        if (balls.count == 0) {
-////                                            balls.append(ball1)
-////                                            balls.append(ball2)
-////                                        } else {
-////                                            balls.append(ball2)
-////                                        }
-//                                        balls.append((ball1, ball2))
-//                                        
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-//            }else{
-//                print("something is wrong");
-//            }
-//        }else{
-//            print("GOT NOTHING");
-//        }
-        
-        self.runAction(SKAction.repeatActionForever(
-            SKAction.sequence([
-                SKAction.runBlock({
-                    self.generateRandomLinesAndBalls(self.lineCap);
-                    self.drawLinesAndBallsOffCanvas(self.lines, balls: self.balls, duration: self.gameSpeed);
-                }),
-                SKAction.waitForDuration(gameSpeed / (3 / 0.8))
-                ])
-            ))
-    }
+    
     
     private func generateRandomLinesAndBalls(lineCap:NSInteger){
         var lastE:CGPoint = CGPointMake(0, 0)
@@ -133,6 +77,9 @@ class GameScene: SKScene {
             let ball2 = drawLine(s, e:e).2;
             lines.append(line);
             balls.append((ball1, ball2))
+            allLines.append(line)
+            allBalls.append(ball1)
+            allBalls.append(ball2)
         }
     }
     
@@ -212,6 +159,7 @@ class GameScene: SKScene {
         CGPathMoveToPoint(pathToDraw, nil, s.x * restrictedWidth, s.y * restrictedHeight)
         CGPathAddLineToPoint(pathToDraw, nil, e.x * restrictedWidth, e.y * restrictedHeight);
         line.path = pathToDraw;
+        line.lineWidth = 20
         
         // offset to center
         line.position = CGPointMake(line.position.x + (0.5 - 0.5 * resWidthRatio)  * screenWidth,
@@ -234,7 +182,7 @@ class GameScene: SKScene {
     // the function that will be called when the player loses the game
     func gameOver(){
         let transition:SKTransition = SKTransition.flipHorizontalWithDuration(0.5)
-        let gameOverScene:SKScene = GameOverScene(size: self.size)
+        let gameOverScene:SKScene = GameOverScene(size: self.size, won:true)
         self.view?.presentScene(gameOverScene, transition: transition)
     }
     
@@ -242,8 +190,47 @@ class GameScene: SKScene {
     // start or restart t
     func gameStart(){
         // TODO
+        self.runAction(SKAction.repeatActionForever(
+            SKAction.sequence([
+                SKAction.runBlock({
+                    self.generateRandomLinesAndBalls(self.lineCap);
+                    self.drawLinesAndBallsOffCanvas(self.lines, balls: self.balls, duration: self.gameSpeed);
+                }),
+                SKAction.waitForDuration(gameSpeed / (3 / 0.8))
+                ])
+            ))
     }
 
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        let touch:UITouch = (touches.first! as UITouch)
+        fingerLocation = touch.locationInNode(self)
+        print(fingerLocation)
+        
+        let node = nodeAtPoint(fingerLocation)
+        
+        if !allLines.contains(node) && !allBalls.contains(node) {
+            gameOver()
+            print("end")
+        }
+    }
+    
+    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        let touch:UITouch = (touches.first! as UITouch)
+        fingerLocation = touch.locationInNode(scene!)
+        print(fingerLocation)
+        
+        let node = nodeAtPoint(fingerLocation)
+        
+        if !allLines.contains(node) && !allBalls.contains(node) {
+            gameOver()
+            print("end")
+        }
+
+    }
+    
+    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        gameOver()
+    }
     
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */

@@ -51,45 +51,45 @@ class GameViewController: UIViewController {
             skView.presentScene(scene)
             
             // set up the pan gesture recognizer
-            pan.addTarget(self, action: "panOnView:")
-            self.view.addGestureRecognizer(pan);
+//            pan.addTarget(self, action: "panOnView:")
+//            self.view.addGestureRecognizer(pan);
         }
         
 
     }
     
-    func panOnView(sender:UIPanGestureRecognizer){
-        switch sender.state {
-        case UIGestureRecognizerState.Possible :
-            print("possible");
-        case UIGestureRecognizerState.Began :
-            print("began");
-            scene!.gameStart();
-            break;
-        case UIGestureRecognizerState.Changed:
-            print("changed %@", sender.locationInView(self.view));
-            break;
-        case UIGestureRecognizerState.Ended:
-            print("ended");
-            // end game
-            scene!.gameOver();
-            break;
-            
-        case UIGestureRecognizerState.Cancelled:
-            print("canceled");
-            // end game
-            scene!.gameOver();
-            break;
-        case UIGestureRecognizerState.Failed:
-            print("failed");
-            // end game
-            scene!.gameOver();
-            break;
-        case UIGestureRecognizerState.Recognized:
-            print("recognized");
-            break;
-        }
-    }
+//    func panOnView(sender:UIPanGestureRecognizer){
+//        switch sender.state {
+//        case UIGestureRecognizerState.Possible :
+//            print("possible");
+//        case UIGestureRecognizerState.Began :
+//            print("began");
+//            scene!.gameStart();
+//            break;
+//        case UIGestureRecognizerState.Changed:
+//            print("changed %@", sender.locationInView(self.view));
+//            break;
+//        case UIGestureRecognizerState.Ended:
+//            print("ended");
+//            // end game
+//            scene!.gameOver();
+//            break;
+//            
+//        case UIGestureRecognizerState.Cancelled:
+//            print("canceled");
+//            // end game
+//            scene!.gameOver();
+//            break;
+//        case UIGestureRecognizerState.Failed:
+//            print("failed");
+//            // end game
+//            scene!.gameOver();
+//            break;
+//        case UIGestureRecognizerState.Recognized:
+//            print("recognized");
+//            break;
+//        }
+//    }
     
     override func viewWillLayoutSubviews() {
         
