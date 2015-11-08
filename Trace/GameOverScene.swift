@@ -12,7 +12,7 @@ import SpriteKit
 
 class GameOverScene: SKScene {
     
-    init(size: CGSize, won:Bool) {
+    init(size: CGSize, won:Bool, score:NSInteger) {
         super.init(size:size)
         self.backgroundColor = SKColor.whiteColor()
         
@@ -20,6 +20,7 @@ class GameOverScene: SKScene {
         
         message = "Game Over"
         
+        let defaults = NSUserDefaults.standardUserDefaults()
         
         let label:SKLabelNode = SKLabelNode(fontNamed: "DamascusBold")
         label.text = message as String
@@ -31,8 +32,21 @@ class GameOverScene: SKScene {
         restartLabel.fontColor = SKColor.blackColor()
         restartLabel.position = CGPointMake(self.size.width/2, self.size.height/2-label.frame.height)
         
+        let scoreLabel:SKLabelNode = SKLabelNode(fontNamed: "DamascusBold")
+        scoreLabel.text = "your score: " + String(score)
+        scoreLabel.fontColor = SKColor.blackColor()
+        scoreLabel.position = CGPointMake(self.size.width/2, self.size.height/2+label.frame.height)
+        
+        let highLabel:SKLabelNode = SKLabelNode(fontNamed: "DamascusBold")
+        highLabel.text = "highest score: " + String(defaults.integerForKey("highest score"))
+        highLabel.fontColor = SKColor.blackColor()
+        highLabel.position = CGPointMake(self.size.width/2, self.size.height/2+2 * label.frame.height)
+
+        
         self.addChild(label)
         self.addChild(restartLabel)
+        self.addChild(scoreLabel)
+        self.addChild(highLabel)
         
         self.runAction(SKAction.sequence([SKAction.waitForDuration(5.0), SKAction.runBlock({
             let transition:SKTransition = SKTransition.flipHorizontalWithDuration(0.5)

@@ -26,11 +26,14 @@ class GameScene: SKScene {
     var gameSpeed = 20.0
     var lineCap = 4
     var fingerLocation:CGPoint = CGPointMake(0, 0)
+    var scoreLabel = SKLabelNode(fontNamed:"Chalkduster")
     
     var balls = [(SKNode, SKNode)]()
     var lines : [SKNode] = [];
     var allLines:[SKNode] = [];
     var allBalls:[SKNode] = [];
+    
+    var score = 0;
     
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
@@ -39,6 +42,12 @@ class GameScene: SKScene {
         myLabel.fontSize = 45;
         myLabel.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame));
         self.addChild(myLabel)
+        
+        
+        scoreLabel.text = "score: " + String(score)
+        scoreLabel.fontSize = 20;
+        scoreLabel.position = CGPoint(x: 50, y: self.frame.height - 20);
+        self.addChild(scoreLabel)
         
         gameStart()
     }
@@ -181,8 +190,13 @@ class GameScene: SKScene {
     
     // the function that will be called when the player loses the game
     func gameOver(){
+        let defaults = NSUserDefaults.standardUserDefaults()
+        
+        if (defaults.integerForKey("highest score") < score || defaults.integerForKey("highest score") == 0) {
+            defaults.setInteger(score, forKey: "highest score")
+        }
         let transition:SKTransition = SKTransition.flipHorizontalWithDuration(0.5)
-        let gameOverScene:SKScene = GameOverScene(size: self.size, won:true)
+        let gameOverScene:SKScene = GameOverScene(size: self.size, won:true, score:self.score)
         self.view?.presentScene(gameOverScene, transition: transition)
     }
     
@@ -225,7 +239,9 @@ class GameScene: SKScene {
             gameOver()
             print("end")
         }
-
+        
+        score+=1;
+        scoreLabel.text = "score: " + String(score)
     }
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
