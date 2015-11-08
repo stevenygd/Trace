@@ -120,7 +120,6 @@ class GameScene: SKScene {
                 var angle = acos(dotProduct / (lengthOf(s, e: e) * lengthOf(lastS, e: lastE)))
                 //change here to limit the range of angle 
                 while angle > 1.14 || angle < 1.04 {
-                    s = lastE
                     e = CGPointMake(randomCGFloat(), randomCGFloat())
                     dotProduct = (e.x - s.x) * (lastE.x - lastS.x) + (e.y - s.y) * (lastE.y - lastS.y)
                     angle = acos(dotProduct / (lengthOf(s, e: e) * lengthOf(lastS, e: lastE)))
